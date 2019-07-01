@@ -13,8 +13,8 @@ _et al_.
 Rust is a lovely language; but my great love is [Tcl](https://www.tcl-lang.org).  Tcl got its start as an
 extension language for C; and no sooner had I begun to work with Rust than I kinda started to
 want to be able to extend it in Tcl.  Shortly thereafter I began working on
-[Molt](https://github.com/wduquette/molt), a Tcl interpreter written in Rust rather than C.  
-I plan to use this blog to talk about Tcl and Rust, and especially about Molt and its
+[Molt](https://github.com/wduquette/molt), a Tcl interpreter written in Rust rather than C.  I
+plan to use this blog to talk about Tcl and Rust, and especially about Molt and its
 implementation.
 
 <!--
