@@ -4,12 +4,6 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
-
-### More Information
-
-A place to include any other types of information that you'd like to include about yourself.
-
-### Contact me
-
-[email@domain.com](mailto:email@domain.com)
+I'm a long-time programmer, blogger, and writer.  Find (some of) my code at my
+[Github Page](https://github.com/wduquette) and (some of) my other writing at
+[Zymurgia House](http://zymurgia.com).
