@@ -79,7 +79,7 @@ Tcl_AppendObjCmd(
 
 The Molt equivalent looks like this:
 
-```Rust
+```rust
 pub fn cmd_append(interp: &mut Interp, argv: &[Value]) -> MoltResult {
     check_args(1, argv, 2, 0, "varName ?value value ...?")?;
 
@@ -115,7 +115,7 @@ Tcl_AppendObjCmd(ClientData dummy, Tcl_Interp *interp, int objc, Tcl_Obj *const 
 }
 ```
 
-```Rust
+```rust
 pub fn cmd_append(interp: &mut Interp, argv: &[Value]) -> MoltResult {
     ...
 }
@@ -132,7 +132,7 @@ context data with the command.  It isn't needed for `append`.
 
 Finally, notice the return value: `int` vs. `MoltResult`, which is a type alias:
 
-```Rust
+```rust
 pub type MoltResult = Result<Value, ResultCode>;
 ```
 
@@ -151,7 +151,9 @@ if (objc < 2) {
 
 The error message looks like this (question marks in Tcl command signatures indicate optional arguments):
 
-`wrong # args: should be "append varName ?value value ...?"`
+```
+wrong # args: should be "append varName ?value value ...?"
+```
 
 The Molt code does exactly the same thing, but much more concisely.  The `check_args` method checks the minimum and maximum number of arguments against the actual number; if there are two
 few it produces the same error message and returns it as part of the `MoltResult`.  
@@ -183,7 +185,7 @@ molt_ok!(interp.set_var2(var_name, new_string.into()))
 The `molt_ok!` macro takes an argument or arguments in a number of forms, converts its
 arguments to a `Value` if necessary, and wraps the value in `Ok()`.  We could also write it like this:
 
-```
+```rust
 let value = interp.set_var2(var_name, new_string.into());
 Ok(value)
 ```
