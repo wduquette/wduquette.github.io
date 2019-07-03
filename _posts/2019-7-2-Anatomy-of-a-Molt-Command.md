@@ -6,7 +6,7 @@ title: Anatomy of a Molt Command
 Tcl is a sort of a cross between shell languages and LISP, with pretensions to C syntax.  As such,
 the language consists of a collection of _commands_.  A statement in the language is also called
 a _command_, and consists of one or more white-space delimited words.  For example, the following
-command appends the string `"Some more text"` the variable `buffer`:
+command appends the string `"Some more text"` to the variable `buffer`:
 
 ```tcl
 append buffer "Some more text"
