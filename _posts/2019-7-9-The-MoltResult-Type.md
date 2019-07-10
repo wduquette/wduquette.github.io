@@ -111,6 +111,8 @@ let index:i64 = molt_find_something(/* some args*)?;
 ...
 ```
 
+Note that the Molt interpreter need not be involved!
+
 ## Tcl Liens
 
 There are still a few things that the Standard Tcl implementation can do that Molt's
