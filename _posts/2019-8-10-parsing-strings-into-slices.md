@@ -57,6 +57,9 @@ The answer turns out to be surprisingly simple, and is based on two facts:
 * The `Chars` iterator can return a `&str` slice containing the remainder of the source string.
 * It's easy to compute a slice from two slices one of which completely contains the other.
 
+For the record, I found the solution at
+[users.rust-lang.org](https://users.rust-lang.org/t/takewhile-iterator-over-chars-to-string-slice/11014).
+
 Consider this:
 
 ```rust
