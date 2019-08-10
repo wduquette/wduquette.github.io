@@ -66,15 +66,16 @@ let source = "1234 abcd";
 let mut c1 = source.chars();
 
 while let Some(ch) = c1.next() {
-    // Do something with the characters
     if !ch.is_digit(10) {
         break;
     }
 }
 
 // ch points at the first non-digit character.
-// And the length of the desired slice in bytes is the length of the source string minus
-// the length of the remainder.
+// And the length of the desired slice in bytes is the
+// length of the source string minus the length of the remainder.
+
+// Yes, I really ought to check whether I got any characters.
 
 let num: &str = &source[..source.len() - c1.as_str().len()];
 
@@ -89,8 +90,9 @@ Of course, you'd want to wrap that up in a function so you don't need to think a
 much.  Here's one possibility.
 
 ```rust
-/// Given a string slice and an iterator on that slice, return a slice of the text
-/// from the beginning of the slice up to the iterator.
+/// Given a string slice and an iterator on that slice, return
+/// a slice of the text from the beginning of the slice up
+/// to the iterator.
 pub fn get_slice<'a>(start: &'a str, end: &Chars) -> &'a str {
     &start[..start.len() - end.as_str().len()]
 }
