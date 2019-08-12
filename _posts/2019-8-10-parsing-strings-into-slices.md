@@ -100,3 +100,39 @@ pub fn get_slice<'a>(start: &'a str, end: &Chars) -> &'a str {
     &start[..start.len() - end.as_str().len()]
 }
 ```
+
+## But what if you need to `peek()`?
+
+There's a problem with using `Chars::as_str` in this way: if you need lookahead.  
+
+```rust
+let source = "1234";
+assert_eq!(source.chars().as_str(), source);
+
+let ps = source.chars().peekable();
+
+// You can't do this: Peekable<Chars> doesn't know anything
+// about Chars except that it's an Iterator.
+assert_eq!(ps.as_str(), source);
+```
+
+Once again, [users.rust-lang.org](https://users.rust-lang.org/t/losing-std-as-str/31262)
+provides the answer: use `CharIndices`.
+
+```rust
+let source = "1234";
+let mut c1 = source.char_indices().peekable();
+
+...
+
+// start is the starting index of the character.
+let Some((start,ch)) = c1.peek();
+
+// Some code that advances the iterator.
+...
+let Some((end,ch)) = c1.peek();
+
+// Grab everything from the first character we peeked up until
+// just before the last character we peeked at.
+let token = &source[start..end];
+```
