@@ -132,7 +132,7 @@ let Some((start,ch)) = c1.peek();
 ...
 let Some((end,ch)) = c1.peek();
 
-// Grab everything from the first character we peeked up until
-// just before the last character we peeked at.
+// Grab everything from the first character we peeked at up to
+// but not including the last character we peeked at.
 let token = &source[start..end];
 ```
