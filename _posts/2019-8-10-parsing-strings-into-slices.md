@@ -3,6 +3,9 @@ layout: post
 title: Parsing Rust Strings into Slices
 ---
 
+**Updated 9/23/19:** Chad Dougherty found a bug in my example code under "The Better Way", below;
+I've modified and extended the post to discuss the issue and added another way to solve it.
+
 A Rust `String` is a vector of bytes containing a UTF-8 string, which is an uneasy
 combination.  You can't simply index into a `String`: the compiler forbids it, because you're
 far too likely to get one byte of a multi-byte UTF-8 `char`.  Instead you need to use a `Chars`
@@ -68,11 +71,11 @@ let source = "1234 abcd";
 
 let mut c1 = source.chars();
 
-while let Some(ch) = c1.next() {
-    if !ch.is_digit(10) {
-        break;
-    }
-}
+// Skip the four digits
+c1.next();
+c1.next();
+c1.next();
+c1.next();
 
 // ch points at the first non-digit character.
 // And the length of the desired slice in bytes is the
@@ -116,6 +119,27 @@ let ps = source.chars().peekable();
 assert_eq!(ps.as_str(), source);
 ```
 
+And sometimes you really do need to peek; my original code under "The Better Way", above,
+looked like this:
+
+```rust
+// Let's parse a number!
+let source = "1234 abcd";
+
+let mut c1 = source.chars();
+
+while let Some(ch) = c1.next() {
+    // The error: we've already advanced PAST the last character
+    // we were looking for.
+    if !ch.is_digit(10) {
+        break;
+    }
+}
+```
+
+It was supposed to parse out the number "1234"; but in fact it parses out "1234{space}" because
+we're using `next()` instead of `peek()`.
+
 Once again, [users.rust-lang.org](https://users.rust-lang.org/t/losing-std-as-str/31262)
 provides the answer: use `CharIndices`.
 
@@ -135,4 +159,57 @@ let Some((end,ch)) = c1.peek();
 // Grab everything from the first character we peeked at up to
 // but not including the last character we peeked at.
 let token = &source[start..end];
+```
+
+## Another Approach
+
+There's another trick you can do to get valid indices.  Given a character index into a slice,
+and the character at that index, you can get the index of the next character by adding the first
+character's length in bytes using the `len_utf8` method.
+
+Here's a partial implementation of a type that wraps a `Peekable<Chars>` iterator and uses
+`len_utf8` to keep track of the current index.
+
+```rust
+/// The Tokenizer type.  
+#[derive(Clone,Debug)]
+pub struct Tokenizer<'a> {
+    // The string being parsed.
+    input: &'a str,
+
+    // The starting index of the next character.
+    index: usize,
+
+    // The iterator used to extract characters from the input
+    chars: Peekable<Chars<'a>>,
+}
+
+
+impl<'a> Tokenizer<'a> {
+    /// Creates a new tokenizer for the given input.
+    pub fn new(input: &'a str) -> Self {
+        Self {
+            input,
+            index: 0,
+            chars: input.chars().peekable(),
+        }
+    }
+
+    // Returns the remainder of the input starting at the index.
+    pub fn as_str(&self) -> &str {
+        &self.input[self.index..]
+    }
+
+    /// Returns the next character and updates the index.
+    pub fn next(&mut self) -> Option<char> {
+        let ch = self.chars.next();
+
+        if let Some(c) = ch {
+            self.index += c.len_utf8();
+        }
+
+        ch
+    }
+    ...
+}
 ```
