@@ -3,7 +3,7 @@ layout: post
 title: Parsing Rust Strings into Slices
 ---
 
-**Updated 9/23/19:** Chad Dougherty found a bug in my example code under "The Better Way", below;
+**Updated 8/23/19:** Chad Dougherty found a bug in my example code under "The Better Way", below;
 I've modified and extended the post to discuss the issue and added another way to solve it.
 
 A Rust `String` is a vector of bytes containing a UTF-8 string, which is an uneasy
